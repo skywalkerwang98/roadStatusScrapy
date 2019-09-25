@@ -5,24 +5,40 @@ from time import time
 from roadStatusScrapy.items import RoadstatusscrapyItem
 
 #TODO 后期要写入配置文件
-TRAFFIC_STATUS_KEY = "6360bd48f5dde0b59ae19fc88f7ee309"
+TRAFFIC_STATUS_KEY_LIST = ["a1159650f573893560c1a783f41ed595","c8ab5db12998d42492c7d484abe61a4d"]
+
+class keyGenerate(object):
+    def __init__(self, keyList, start=0, end=-1):
+        self.keyList = keyList
+        self.start = start
+        self.end = end if end != -1 else len(keyList)
+        self.cur = start
+        self.length = self.end - self.start
+    
+    def getKey(self):
+        key = self.keyList[self.cur]
+        self.cur = (self.cur + 1)%self.length
+        return key
+
 
 class AmapSpider(scrapy.Spider):
     name = 'Amap'
-    domain = 'https://restapi.amap.com/v3/traffic/status/rectangle?key={key}&level=6&extensions=all&rectangle='.format(key=TRAFFIC_STATUS_KEY)
+    domain = 'https://restapi.amap.com/v3/traffic/status/rectangle?key={key}&level=6&extensions=all&rectangle='
     time = time()
 
 #TODO　后期要写入配置文件
     class args:
-        leftLng = 106.309736
-        leftLat = 29.450751
-        rightLng = 106.741362
-        rightLat = 29.728119
-        rows = 6
-        cols = 6
+        ##左下和右上的坐标
+        leftLng = 103.710900
+        leftLat = 30.471200
+        rightLng = 104.445600
+        rightLat = 30.843900
+        rows = 10
+        cols = 9
 
     def start_requests(self):
         self.time = time()
+        keys = keyGenerate(TRAFFIC_STATUS_KEY_LIST)
         leftLng, leftLat, rightLng, rightLat, rows, cols = self.args.leftLng, self.args.leftLat, self.args.rightLng, self.args.rightLat, self.args.rows, self.args.cols
         widthlng = round(abs(leftLng - rightLng)/rows, 2)
         widthlat = round(abs(leftLat - rightLat)/cols, 2)
@@ -35,7 +51,7 @@ class AmapSpider(scrapy.Spider):
                 endLng = round(startLng+widthlng, 6)
                 locStr = str(startLng)+","+str(startLat) + \
                     ";"+str(endLng)+","+str(endLat)
-                urls.append(self.domain+locStr)
+                urls.append(self.domain.format(key=keys.getKey())+locStr)
         for url in urls:
             yield scrapy.Request(url=url, callback=self.parse)
 
@@ -53,4 +69,19 @@ class AmapSpider(scrapy.Spider):
             item['lcodes'] = record.get('lcodes')
             item['polyline'] = record.get('polyline')
             yield item
-        
+
+# if __name__ == '__main__':
+#     keys = keyGenerate(['1','2'])
+#     keys.getKey()
+#     print(keys.getKey())
+#     print(keys.getKey())
+#     print(keys.getKey())
+#     print(keys.getKey())
+#     print(keys.getKey())
+#     print(keys.getKey())
+#     print(keys.getKey())
+#     print(keys.getKey())
+#     print(keys.getKey())
+#     print(keys.getKey())
+#     keys.getKey()
+#     keys.getKey()

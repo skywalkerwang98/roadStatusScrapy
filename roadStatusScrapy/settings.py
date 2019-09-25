@@ -13,7 +13,7 @@ from datetime import datetime
 
 # 文件及路径，log目录需要先建好
 today = datetime.now()
-log_file_path = "/root/python/roadStatus/roadStatusScrapy/roadStatusScrapy/log/roadStatusScrapy_{}_{}_{}.log".format(today.year, today.month, today.day)
+log_file_path = "roadStatusScrapy/log/roadStatusScrapy_{}_{}_{}.log".format(today.year, today.month, today.day)
 
 BOT_NAME = 'roadStatusScrapy'
 
@@ -99,7 +99,7 @@ ITEM_PIPELINES = {
 MONGO_HOST = "127.0.0.1"  # 主机IP
 MONGO_PORT = 27017  # 端口号
 MONGO_DB = "roadStatusAmap"  # 库名 
-MONGO_COLL = "Chongqing"  # collection名
+MONGO_COLL = "Chengdu"  # collection名
 MONGO_USER = "bdsc_dev"
 MONGO_PSW = "bdsc11081"
 
