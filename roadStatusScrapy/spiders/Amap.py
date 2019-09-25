@@ -5,7 +5,7 @@ from time import time
 from roadStatusScrapy.items import RoadstatusscrapyItem
 
 #TODO 后期要写入配置文件
-TRAFFIC_STATUS_KEY_LIST = ["a1159650f573893560c1a783f41ed595","c8ab5db12998d42492c7d484abe61a4d"]
+TRAFFIC_STATUS_KEY_LIST = ["a1159650f573893560c1a783f41ed595","c8ab5db12998d42492c7d484abe61a4d","3e891357cb7611d22185afe02d98d57f"]
 
 class keyGenerate(object):
     def __init__(self, keyList, start=0, end=-1):
@@ -33,8 +33,8 @@ class AmapSpider(scrapy.Spider):
         leftLat = 30.471200
         rightLng = 104.445600
         rightLat = 30.843900
-        rows = 10
-        cols = 9
+        rows = 11
+        cols = 11
 
     def start_requests(self):
         self.time = time()
